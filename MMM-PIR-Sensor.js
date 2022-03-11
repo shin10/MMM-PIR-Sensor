@@ -26,7 +26,8 @@ Module.register('MMM-PIR-Sensor',{
 		presenceIndicatorColor: "red",
 		presenceOffIndicator: null,
 		presenceOffIndicatorColor: "dimgray",
-		runSimulator: false
+		runSimulator: false,
+		animationSpeed: 0
 	},
 
 	userPresence: false,
@@ -62,7 +63,9 @@ Module.register('MMM-PIR-Sensor',{
 			if  (payload === false && this.config.powerSavingNotification === true){
 				this.sendNotification("SHOW_ALERT",{type:"notification", message:this.config.powerSavingMessage});
 			}
-			this.updateDom();
+			this.updateDom(this.config.animationSpeed);
+		} else if (notification === 'HDMI_POWER') {
+			this.sendNotification(notification, payload)
 		} else if (notification === 'SHOW_ALERT') {
 			this.sendNotification(notification, payload)
 		}
@@ -70,6 +73,7 @@ Module.register('MMM-PIR-Sensor',{
 
 	notificationReceived: function (notification, payload) {
 		if (notification === 'SCREEN_WAKEUP') {
+			console.log(notification, payload)
 			this.sendNotification(notification, payload)
 		}
 	},
