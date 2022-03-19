@@ -10,6 +10,7 @@
 const NodeHelper = require("node_helper");
 const Gpio = require("onoff").Gpio;
 const exec = require("child_process").exec;
+const ALWAYS = true;
 
 module.exports = NodeHelper.create({
   start: function () {
@@ -33,7 +34,7 @@ module.exports = NodeHelper.create({
       exec("/usr/bin/vcgencmd display_power").stdout.on(
         "data",
         function (data) {
-          if (data.indexOf("display_power=0") === 0) {
+          if (ALWAYS || data.indexOf("display_power=0") === 0) {
             exec("/usr/bin/vcgencmd display_power 1", null);
             self.sendSocketNotification("HDMI_POWER", true);
           }
