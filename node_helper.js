@@ -95,7 +95,7 @@ module.exports = NodeHelper.create({
 
   // Subclass socketNotificationReceived received.
   socketNotificationReceived: function (notification, payload) {
-    if (notification === "CONFIG" && this.started == false) {
+    if (notification === "CONFIG" && this.started === false) {
       const self = this;
       this.config = payload;
 
@@ -170,13 +170,13 @@ module.exports = NodeHelper.create({
 
       // Detected movement
       this.pir.watch(function (err, value) {
-        if (value == valueOn) {
+        if (value === valueOn) {
           self.sendSocketNotification("USER_PRESENCE", true);
           if (self.config.powerSaving) {
             clearTimeout(self.deactivateMonitorTimeout);
             self.activateMonitor();
           }
-        } else if (value == valueOff) {
+        } else if (value === valueOff) {
           self.sendSocketNotification("USER_PRESENCE", false);
           if (!self.config.powerSaving) {
             return;
