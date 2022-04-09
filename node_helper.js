@@ -170,6 +170,21 @@ module.exports = NodeHelper.create({
 
       // Detected movement
       this.pir.watch(function (err, value) {
+        const time = new Date().toTimeString().substr(0, 5);
+        if (self.config.schedule?.from && self.config.schedule?.to) {
+          if (
+            (self.config.schedule?.from < self.config.schedule?.to &&
+              (self.config.schedule?.from > time ||
+                time > self.config.schedule?.to)) ||
+            (self.config.schedule?.to < self.config.schedule?.from &&
+              self.config.schedule?.from < time &&
+              time > self.config.schedule?.to)
+          ) {
+            // self.deactivateMonitor();
+            return;
+          }
+        }
+
         if (value === valueOn) {
           self.sendSocketNotification("USER_PRESENCE", true);
           if (self.config.powerSaving) {
